@@ -57,9 +57,13 @@ func (this *Client) RPCSelect(s string, reply *int64) error {
 
 func server() {
 	server := rpc.NewServer()
-	server.Register(new(Client))
+	err := server.Register(new(Client))
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
 
-	ln, err := net.Listen("tcp", ":8800")
+	ln, err := net.Listen("tcp", "localhost:8800")
 	if err != nil {
 		log.Fatal(err)
 		return
@@ -75,7 +79,7 @@ func server() {
 }
 
 func client() {
-	conn, err := net.Dial("tcp", ":8800")
+	conn, err := net.Dial("tcp", "localhost:8800")
 	if err != nil {
 		log.Fatal(err)
 		return
@@ -97,8 +101,7 @@ func client() {
 	fmt.Printf("\033[34m%s\033[m\n", separator)
 
 	err = c.Call("Client.RPCUpdate",
-		[2]string{"ff5a62e5-101e-48aa-939c-ea9a8aadbd67", fmt.Sprint("client_", i-1)},
-		//Client{uuid: uuid, login: fmt.Sprint("client_", i-1)},
+		[2]string{"eb9a52db-ff18-4f36-963b-7289011bb926", fmt.Sprint("client_", i-1)},
 		&result)
 	if err != nil {
 		log.Fatal(err)
@@ -117,7 +120,6 @@ func client() {
 	}
 
 	fmt.Printf("\033[31m%s\033[m\n", separator)
-
 }
 
 func InitConnDB(driverName string) (db *sql.DB) {
@@ -153,7 +155,6 @@ func DoUpdate(uuid string, newLogin string) (rowsAffected int64) {
 	}
 
 	rowsAffected, err = result.RowsAffected()
-
 	return
 }
 

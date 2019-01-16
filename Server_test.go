@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/hex"
 	"fmt"
 	_ "github.com/lib/pq"
 	"github.com/satori/go.uuid"
@@ -30,7 +29,7 @@ func TestDoInsert(t *testing.T) {
 }
 
 func TestDoUpdate(t *testing.T) {
-	rowsAffected := DoUpdate(toStringUUID(c.uuid), "TestDoUpdate")
+	rowsAffected := DoUpdate(c.uuid.String(), "TestDoUpdate")
 
 	if rowsAffected != 1 {
 		t.Error("Expected", 1, "got", rowsAffected)
@@ -44,22 +43,6 @@ func TestDoSelect(t *testing.T) {
 	if rowsAffected < 1 {
 		t.Error("Expected >", 1, "got", rowsAffected)
 	}
-}
-
-func toStringUUID(u uuid.UUID) string {
-	buf := make([]byte, 36)
-
-	hex.Encode(buf[0:8], u[0:4])
-	buf[8] = '-'
-	hex.Encode(buf[9:13], u[4:6])
-	buf[13] = '-'
-	hex.Encode(buf[14:18], u[6:8])
-	buf[18] = '-'
-	hex.Encode(buf[19:23], u[8:10])
-	buf[23] = '-'
-	hex.Encode(buf[24:], u[10:])
-
-	return string(buf)
 }
 
 //func setup() {

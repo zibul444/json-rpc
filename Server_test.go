@@ -41,11 +41,10 @@ func TestDoSelect(t *testing.T) {
 	rowsAffected, _ := DoSelect(fmt.Sprintf("SELECT * FROM client WHERE uuid = '%s'",
 		c.uuid))
 
-	if rowsAffected < 1  {
+	if rowsAffected < 1 {
 		t.Error("Expected >", 1, "got", rowsAffected)
 	}
 }
-
 
 func toStringUUID(u uuid.UUID) string {
 	buf := make([]byte, 36)
@@ -81,4 +80,3 @@ func toStringUUID(u uuid.UUID) string {
 //	shutdown()
 //	os.Exit(code)
 //}
-

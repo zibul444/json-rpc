@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-var c Client
+var c = Client{login: "test_client", uuid: uuid.Must(uuid.NewV4())}
 
 func TestDoInsert(t *testing.T) {
 	DoInsert(c)
